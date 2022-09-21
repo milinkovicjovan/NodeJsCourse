@@ -1,6 +1,7 @@
 const EventEmitter = require("events");
 const http = require("http");
 
+// sales parent class EventEmitter superClass
 class Sales extends EventEmitter {
   constructor() {
     super();
@@ -24,6 +25,7 @@ myEmitter.on("newSale", (stock) => {
 });
 
 myEmitter.emit("newSale", 9);
+// emit = clicking events
 
 ////////////////////////
 
