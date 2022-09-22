@@ -109,16 +109,40 @@ const deleteTour = (req, res) => {
   }); // 204 means no content
 };
 
-// get to get tours
-// app.get('/api/v1/tours', getAllTours);
-// app.get('/api/v1/tours/:id', getTour);
-// post to create new tour
-// app.post('/api/v1/tours', createTour);
-// patch and put to update tour // Patch updates only specific part
-// Put update whole object
-// app.patch('/api/v1/tours/:id', updateTour);
-// delete data
-// app.delete('/api/v1/tours/:id', deleteTour);
+const getAllUsers = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not yet defined',
+  });
+};
+
+const getUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not yet defined',
+  });
+};
+
+const createUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not yet defined',
+  });
+};
+
+const updateUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not yet defined',
+  });
+};
+
+const deleteUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not yet defined',
+  });
+};
 
 // CHAINED ROUTES
 app.route('/api/v1/tours').get(getAllTours).post(createTour);
@@ -129,6 +153,13 @@ app
   .patch(updateTour)
   .delete(deleteTour);
 
+app.route('/api/v1/users').get(getAllUsers).post(createUser);
+
+app
+  .route('/api/v1/users/:id')
+  .get(getUser)
+  .patch(updateUser)
+  .delete(deleteUser);
 // START SERVER
 const port = 3000;
 app.listen(port, () => {
