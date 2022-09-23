@@ -7,11 +7,12 @@ const userRouter = require('./routes/userRoutes');
 const app = express();
 // this is middleware (function that can modify incoming request data )
 // MIDDLEWARES
-console.log(process.env.NODE_ENV);
+
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+// get access to the request body on the request object
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`));
 
