@@ -31,7 +31,7 @@ exports.getAllTours = async (req, res) => {
       query = query.sort(sortBy);
       // sort('price ratingsAverage')
     } else {
-      query = query.sort('-createdAt');
+      query = query.sort('-createdAt _id');
     }
 
     // 3) Field limiting
@@ -42,14 +42,24 @@ exports.getAllTours = async (req, res) => {
       query = query.select('-__v');
     }
 
+    // 4) Pagination
+    // we convert req.query.page into number and default is first page
+    const page = req.query.page * 1 || 1;
+    const limit = req.query.limit * 1 || 100;
+    const skip = (page - 1) * limit;
+
+    // page=2&limit=10, 1-10 = page-1, 11-20 = page-2, 21-30 page = 3
+    query = query.skip(skip).limit(limit);
+
+    if (req.query.page) {
+      // we await promise and countDocuments count all our documents
+      const numTours = await Tour.countDocuments();
+      if (skip >= numTours) throw new Error('This page does not exist');
+    }
+
     // EXECUTE QUERY
     const tours = await query;
-
-    // const query = await Tour.find()
-    //   .where('duration')
-    //   .equals(5)
-    //   .where('difficulty')
-    //   .equals('easy');
+    // query.sort().select().skip().limit()
 
     // SEND RESPONSE
     res.status(200).json({
