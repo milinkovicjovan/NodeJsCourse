@@ -88,6 +88,7 @@ const tourSchema = new mongoose.Schema(
 tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
 });
+// not stored in database only on postman
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create()
 tourSchema.pre('save', function (next) {
@@ -127,7 +128,7 @@ tourSchema.post(/^find/, function (docs, next) {
 // AGGREGATION MIDDLEWARE
 tourSchema.pre('aggregate', function (next) {
   this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
-  console.log(this.pipeline());
+  console.log('THIS IS PIPELINE', this.pipeline());
   next();
 });
 
