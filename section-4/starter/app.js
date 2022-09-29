@@ -4,6 +4,7 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
+const hpp = require('hpp');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -46,6 +47,20 @@ app.use(mongoSanitize()); // this removes dolar signs and dots in req.body
 
 // Data sanitization agains XSS
 app.use(xss()); // this deletes malicious html code with some javascript code
+
+// Prevent parametar pollution
+app.use(
+  hpp({
+    whitelist: [
+      'duration',
+      'ratingsQuantity',
+      'ratingsAverage',
+      'maxGroupSize',
+      'difficulty',
+      'price',
+    ], // we allow duplication of duration
+  })
+);
 
 // Serving static files
 app.use(express.static(`${__dirname}/public`));
