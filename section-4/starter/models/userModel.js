@@ -17,11 +17,16 @@ const userSchema = new mongoose.Schema({
     validate: [validator.isEmail, 'Please provide a valid email'],
   },
   photo: String,
+  role: {
+    type: String,
+    enum: ['user', 'guide', 'lead-guide', 'admin'],
+    default: 'user',
+  },
   password: {
     type: String,
     required: [true, 'Please provide a password'],
     minlength: 8,
-    select: false,
+    select: false, // never show in any output(postman)
   },
   passwordConfirm: {
     type: String,
@@ -50,6 +55,8 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+// candidatePassword, password that the user passes in body
+// userPassword storedPassword
 userSchema.methods.correctPassword = async function (
   candidatePassword,
   userPassword
