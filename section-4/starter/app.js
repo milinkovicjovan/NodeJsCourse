@@ -2,6 +2,8 @@ const express = require('express');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -36,6 +38,14 @@ app.use(
     limit: '10kb',
   })
 );
+
+// Data sanitization against NoSQL query injection
+// if we only know password to some user and inject in email input { "email": {$gt: ""} }
+// we can login as admin if we don't have data sanitization
+app.use(mongoSanitize()); // this removes dolar signs and dots in req.body
+
+// Data sanitization agains XSS
+app.use(xss()); // this deletes malicious html code with some javascript code
 
 // Serving static files
 app.use(express.static(`${__dirname}/public`));
